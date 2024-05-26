@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Title</title>
-</head>
-<body>
-<div>Hello <span th:text="|${name} (${email})|"></span></div>
-<a th:href="@{logout}">Logout</a>
-
-</body>
+  </head>
+  <body>
+    <div th:if="${name != null}">
+      Hello <span th:text="|${name} (${email})|"></span>
+    </div>
+    <div th:if="${name == null}">Not authenticated</div>
+    <a th:if="${name == null}" th:href="@{/oauth2/authorization/authentik}"
+      >Login</a
+    >
+    <form th:if="${name != null}" th:action="@{/logout}" method="post">
+      <input
+        type="hidden"
+        th:name="${_csrf.parameterName}"
+        th:value="${_csrf.token}"
+      />
+      <button type="submit">Logout</button>
+    </form>
+  </body>
 </html>
